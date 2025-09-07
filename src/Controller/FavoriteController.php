@@ -11,7 +11,8 @@ final class FavoriteController extends AbstractController
     #[Route(
         path:'/favorite-listings', 
         name: 'all_favorite_listings',
-        methods:'GET')]
+        methods:'GET')
+    ]
     public function index(): Response
     {
         return $this->render('favorites/index.html.twig', [

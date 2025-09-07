@@ -11,7 +11,8 @@ final class ListingController extends AbstractController
     #[Route(
         path:'/listings', 
         name: 'all_listingq',
-        methods: 'GET')]
+        methods: 'GET')
+    ]
     public function index(): Response
     {
         return $this->render('listings/index.html.twig', [
