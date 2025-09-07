@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ListingRepository::class)]
 class Listing
@@ -17,16 +18,35 @@ class Listing
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message:'Le titre d\une annonce est obligatoire')]
+    #[Assert\Length(
+        min: 10,
+        max:100,
+        minMessage: 'La longueur d\un titre d\'annonce doit avoir plus de 10 caractères', 
+        maxMessage: 'La longueur d\un titre d\'annonce doit avoir au maximum 100 caractères'
+    )]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message:'La description d\une annonce est obligatoire')]
+    #[Assert\Length(
+        min: 15,
+        max:255,
+        minMessage: 'La descriptioon d\une  d\'une annonce doit avoir plus de 10 caractères', 
+        maxMessage: 'La descriptioon d\une  d\'une annonce doit avoir au maximum 100 caractères'
+    )]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Assert\Type(
+        type: 'float', 
+        message: 'Le prix doit être un nombre décimal'
+    )]
     private ?float $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'listings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:'La ville où se situe une annonce est obligatoire')]
     private ?City $city = null;
 
     /**

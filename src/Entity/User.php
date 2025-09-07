@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -22,24 +23,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message:'L\'adresse email est obligatoire')]
+    #[Assert\Length(
+        min: 10,
+        max:320,
+        minMessage: 'L\'email doit être plus long', 
+        maxMessage: 'L\'email ne doit pas dépasser 320 caractères'
+    )]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:'L\'utilisateur doit avoir auu moins un rôle')]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:'Le mot de passe est obligatoire')]
+    // Rajouter un regex comme contrainte de validation des données
     private ?string $password = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message:'Le prénom est obligatoire')]
+    #[Assert\Length(
+        min: 4,
+        max:15,
+        minMessage: 'Le prénom doit avoir plus de 4 caractères', 
+        maxMessage: 'Le prénom doit avoir au maximum 15 caractères'
+    )]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message:'Le nom de famille est obligatoire')]
+    #[Assert\Length(
+        min: 4,
+        max:20,
+        minMessage: 'Le nom de famille doit avoir plus de 4 caractères', 
+        maxMessage: 'Le nom de famille doit avoir au maximum 15 caractères'
+    )]
     private ?string $lastname = null;
 
     /**

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Trait\DateTrait;
 use App\Repository\TransactionTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TransactionTypeRepository::class)]
 class TransactionType
@@ -17,6 +18,13 @@ class TransactionType
     private ?int $id = null;
 
     #[ORM\Column(length: 15)]
+    #[Assert\NotBlank(message:'Le type de propriété est obligatoire')]
+    #[Assert\Length(
+        min: 4,
+        max:15,
+        minMessage: 'Le nom du type de propriété doit avoir plus de 4 caractères', 
+        maxMessage: 'Le nom du type de propriété doit avoir au maximum 15 caractères'
+    )]
     private ?string $name = null;
 
     public function getId(): ?int

@@ -2,12 +2,16 @@
 
 namespace App\Entity\Trait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait DateTrait {
     #[ORM\Column]
+    #[Assert\NotBlank(message:'La date de création est obligatoire')]
+    #[Assert\DateTime(message:'Le format de date doit être "Y-m-d H:i:s"')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\DateTime(message:'Le format de date doit être "Y-m-d H:i:s"')]
     private ?\DateTime $updatedAt = null;
 
     

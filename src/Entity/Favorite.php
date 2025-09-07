@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FavoriteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FavoriteRepository::class)]
 class Favorite
@@ -14,14 +15,24 @@ class Favorite
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\DateTime(
+        format:'Y-m-d', 
+        message: 'La date doit être au format Y-m-ds')
+    ]
     private ?\DateTime $date_favorited = null;
 
     #[ORM\ManyToOne(inversedBy: 'favorites')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(
+        message:'L\'utilisateur doit être renseigné à l\'annonce mise en favori'
+    )]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'favorites')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(
+        message:'L\'annonce doit être renseignée à la mise en favori'
+    )]
     private ?Listing $listing = null;
 
     public function getId(): ?int

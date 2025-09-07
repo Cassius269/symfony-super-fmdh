@@ -7,6 +7,7 @@ use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CityRepository::class)]
 class City
@@ -19,10 +20,18 @@ class City
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank(message:'Le nom de la ville doit être renseigné')]
+    #[Assert\Length(
+        min: 3,
+        max:30,
+        minMessage: 'Le nom de la ville doit avoir plus de 3 caractères', 
+        maxMessage: 'Le nom de la ville doit avoir moins de 31 caractères'
+    )]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'cities')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:'Le pays doit être renseignée')]
     private ?Country $country = null;
 
     /**

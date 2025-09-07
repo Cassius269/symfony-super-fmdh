@@ -7,6 +7,7 @@ use App\Repository\CountryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
 class Country
@@ -19,6 +20,13 @@ class Country
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank(message:'Le nom du pays doit être renseigné')]
+    #[Assert\Length(
+        min: 3,
+        max:30,
+        minMessage: 'Le nom du pays doit avoir plus de 3 caractères', 
+        maxMessage: 'Le nom du pays doit avoir au maximum 30 caractères'
+    )]
     private ?string $name = null;
 
     /**
