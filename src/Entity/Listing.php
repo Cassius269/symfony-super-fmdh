@@ -58,6 +58,21 @@ class Listing
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\ManyToOne(inversedBy: 'listings')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:'Le type de propriété d\'une annonce est obligatoire')]
+    private ?PropertyType $propertyType = null;
+
+    #[ORM\ManyToOne(inversedBy: 'listings')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:'Le type de transaction d\'une annonce est obligatoire')]
+    private ?TransactionType $transactionType = null;
+
+    #[ORM\ManyToOne(inversedBy: 'listings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Agent $agent = null;
+
+   
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
@@ -157,4 +172,42 @@ class Listing
 
         return $this;
     }
+
+    public function getPropertyType(): ?PropertyType
+    {
+        return $this->propertyType;
+    }
+
+    public function setPropertyType(?PropertyType $propertyType): static
+    {
+        $this->propertyType = $propertyType;
+
+        return $this;
+    }
+
+    public function getTransactionType(): ?TransactionType
+    {
+        return $this->transactionType;
+    }
+
+    public function setTransactionType(?TransactionType $transactionType): static
+    {
+        $this->transactionType = $transactionType;
+
+        return $this;
+    }
+
+    public function getAgent(): ?Agent
+    {
+        return $this->agent;
+    }
+
+    public function setAgent(?Agent $agent): static
+    {
+        $this->agent = $agent;
+
+        return $this;
+    }
+
+  
 }
