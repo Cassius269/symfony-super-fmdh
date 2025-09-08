@@ -1,0 +1,12 @@
+// Importation des variables
+@use './utils/variables' as *;
+
+/***** IMPORTATION DE BOOTSTRAP *****/
+// Injecter nos propres valeurs dans les variables Bootstrap avant qu'elles ne soient utilisées par Bootstrap
+@use 'bootstrap/scss/bootstrap' with (
+    $primary: $primary, // injection explicite
+    $secondary: $secondary
+);
+
+// Bases
+@use './base/base';
