@@ -11,7 +11,7 @@ final class HomeController extends AbstractController
 {
     #[Route(
         path:'/', 
-        name: 'home ',
+        name: 'home',
         methods:'GET')
     ]
     public function index(ListingRepository $listingRepository): Response
