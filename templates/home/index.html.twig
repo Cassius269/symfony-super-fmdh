@@ -2,6 +2,36 @@
 
 {% block title %}Page d'accueil{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('homepage')}}
+{% endblock %}
+
 {% block body %}
-    <h1 class="bg-primary">La page d'accueil</h1>
+    <section class="mb-5">
+    {# Si il y a des annonces de maisons #}
+        <h2>Nos annonces de maisons</h2>
+        <hr>
+        <div class="row gap-3">
+            {% for listing in houses  %}
+                    {% include "partials/_card_listing.html.twig" %}
+            {% endfor %}
+            </div>  
+            {% if houses|length > 3 %}
+                    <a href="#" class="d-flex justify-content-end"><button class="btn btn-secondary mt-5">Voir +</button></a>
+            {% endif %}
+        </section>
+        <section class="mb-5">
+        {# Si il y a des annonces d'appartements #}
+            <h2>Nos annonces d'appartement</h2>
+            <hr>
+            <div class="row gap-3">
+                {% for listing in appartments  %}
+                        {% include "partials/_card_listing.html.twig" %}
+                {% endfor %}
+                </div>  
+                {% if appartments|length > 3 %}
+                        <a href="#" class="d-flex justify-content-end"><button class="btn btn-secondary mt-5">Voir +</button></a>
+                {% endif %}
+        </section>
 {% endblock %}
