@@ -1,0 +1,10 @@
+// Importation des variables
+@use '../utils/variables' as *;
+
+form {
+    max-width: 500px;
+    margin: auto;
+    box-shadow: $tertiary 0px 4px 12px;
+    padding: 2rem;
+    border-radius: 10px;
+}

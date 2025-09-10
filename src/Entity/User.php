@@ -7,12 +7,17 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(
+    fields:[ 'email'],
+    message:'L\'email existe déjà',
+)]
 #[ORM\InheritanceType('JOINED')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -37,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:'L\'utilisateur doit avoir auu moins un rôle')]
+    // #[Assert\NotBlank(message:'L\'utilisateur doit avoir au moins un rôle')]
     private array $roles = [];
 
     /**

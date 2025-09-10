@@ -15,7 +15,11 @@
     <body>
         {# Inclusion du footer #}
         {% include 'partials/_header.html.twig' %}
-        <main>
+
+        {# Inclusion des messages flash #}
+        {% include 'partials/_message_flash.html.twig' %}
+        
+        <main class="container">
             {% block body %}{% endblock %}
         </main>
 

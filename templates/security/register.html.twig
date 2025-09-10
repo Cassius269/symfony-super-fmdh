@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de contact{% endblock %}
+{% block stylesheets %}
+{# Importer la stylisation parente d'abord #}
+    {{ parent() }}
+    {{ encore_entry_link_tags('registerPage') }}
+{% endblock %}
+{% block body %}
+    {# {{ form(form)}} #}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.firstname)}}
+        {{ form_row(form.lastname)}}
+        {{ form_row(form.email)}}
+        {{ form_row(form.password)}}
+        {{ form_row(form.typeUser)}}
+        {{ form_row(form.agreementTerms)}}
+
+        <input class="form-control btn btn-primary mt-3" type="submit" value="Envoyer" id="submit">
+    {{ form_end(form) }}
+{% endblock %}
