@@ -79,6 +79,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $favorites;
 
+    #[ORM\Column]
+    private ?bool $isAccepted = null;
+
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
@@ -216,6 +219,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $favorite->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isAccepted(): ?bool
+    {
+        return $this->isAccepted;
+    }
+
+    public function setIsAccepted(bool $isAccepted): static
+    {
+        $this->isAccepted = $isAccepted;
 
         return $this;
     }

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class SecurityController extends AbstractController
 {
@@ -50,6 +51,7 @@ final class SecurityController extends AbstractController
                      ->setLastname($lastname)  
                      ->setEmail($email)         
                       ->setRoles(['ROLE_AGENT'])
+                      ->setIsAccepted(false) // mettre en attente d'abord
                     ->setPassword($passwordHasher->hashPassword($agent, $plainPassword)) // hasher le mot de passe avant de l'insérer en base de données
                     ->setCreatedAt(new \DateTimeImmutable());
 
@@ -60,6 +62,7 @@ final class SecurityController extends AbstractController
                      ->setLastname($lastname)    
                      ->setEmail($email)         
                     ->setRoles(['ROLE_CLIENT'])
+                    ->setIsAccepted(true)
                     ->setPassword($passwordHasher->hashPassword($client,$plainPassword)) // hasher le mot de passe avant de l'insérer en base de données
                     ->setCreatedAt(new \DateTimeImmutable());
                     
@@ -89,6 +92,39 @@ final class SecurityController extends AbstractController
         ]);
     }
 
+    // Action de se connecter
+
+    #[Route(
+        path:'/login',
+        name: 'login'
+    )]    
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+
+        // Si utilisateur déjà connecté, rediriger à la page d'accueil
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
+
+        // Stoker la dernière rencontrée ainsi que l'identifiant utilisateur(ici le email)
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $username = $authenticationUtils->getLastUsername();
+
+        // En cas d'erreur, préparer un message flash
+        if($error){
+            $this->addFlash('error', 'Une erreur d\'authentification s\'est produite');
+        }
+
+        return $this->render('security/login.html.twig',[
+            'error' => $error,
+            'username' => $username
+        ]);
+    }
+
+    #[Route(
+        path:'/logout',
+        name: 'logout'
+    )]
     public function logout(): Response
     {
 

@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait DateTrait {
-    #[ORM\Column]
+    #[ORM\Column(nullable:false)]
     #[Assert\DateTime(message:'Le format de date doit être "Y-m-d H:i:s"')]
     private ?\DateTimeImmutable $createdAt = null;
 
