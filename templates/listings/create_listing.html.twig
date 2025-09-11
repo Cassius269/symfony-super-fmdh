@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="mb-5">
+        <h2 class="mb-5">Ajouter une nouvelle annonce</h2>
+        {# Formulaire d'ajout de nouvelle annonce #}
+        {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.description)}}
+            {{ form_row(form.price)}}
+            {{ form_row(form.image)}}
+            {{ form_row(form.city)}}
+            {{ form_row(form.transactionType)}}
+            {{ form_row(form.propertyType)}}
+
+            <input type="submit" class="form-control btn btn-primary mt-3 text-white p-3" value="Publier un nouvelle annonce">
+        {{ form_end(form) }}
+        <a href="{{ path('home') }}" class="btn btn-secondary d-block m-auto w-25 mt-5">Revenir à la page d'accueil</a>
+    </section>
+{% endblock %}

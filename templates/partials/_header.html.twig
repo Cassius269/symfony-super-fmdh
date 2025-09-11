@@ -16,7 +16,7 @@
         <!-- Bouton ajouter réservé à l'ADMIN et aux AGENTS -->
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AGENT') %}
           <li class="nav-item">
-             <a class="nav-link" href="...">Ajouter</a>
+             <a class="nav-link" href="{{ path('listings_create_new') }}">Ajouter</a>
           </li>
         {% endif %}
       

@@ -2,16 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Agent;
-use App\Entity\City;
 use App\Entity\Listing;
-use App\Entity\PropertyType;
-use App\Entity\TransactionType;
-use DateTimeImmutable;
+use App\Form\ListingType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ListingController extends AbstractController
 {
@@ -27,48 +26,68 @@ final class ListingController extends AbstractController
         ]);
     }
 
+
+    // Action pour créer une nouvelle annonce immobilière
     #[Route(
-        path:'/listing/create'
+        path: '/listings/create-new-listing',
+        name: 'listings_create_new',
+        methods:['GET', 'POST']
     )]
-    public function show(EntityManagerInterface $em): Response
-    {
+    #[IsGranted('ROLE_AGENT')]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response {
+        // Création d'un nouvel objet annonce
+        $listing = new Listing;
 
-        $propertyType = $em->getRepository(PropertyType::class)->findOneBy([
-        'name' => 'maison'
-            ]);
-
-        $transactionType = $em->getRepository(TransactionType::class)->findOneBy([
-        'name' => 'location'
-            ]);
+        // Création du formulaire et liaison avec l'objet à hydrater
+        $form = $this->createForm(ListingType::class, $listing);
         
-    $lyon = $em->getRepository(City::class)->findOneBy([
-        'name' => 'Lyon'
-    ]);
+        // Recueillir la requête 
+        $form->handleRequest($request);
 
-    $agent = $em->getRepository(Agent::class)->findOneBy([
-        'email' => 'jean-dupont@email.com'
-    ]);
+        // Vérifier si le formulaire a été soumis et est valide
+        if($form->isSubmitted() && $form->isValid()){
+            // dd($listing);
+            // S'il n'y pas de traitement particulier à faire, compléter les informations de l'objet déjà hydraté (remplir) $listing
+            $listing->setAgent($this->getUser())
+                    ->setCreatedAt(new \DateTimeImmutable());
+        
+            // Persister et envoyer en base de donnée
+            $entityManager->persist($listing);
+            $entityManager->flush();
 
-     if(! $lyon){
-        throw $this->createNotFoundException('La ville de Lyon n\'es pas enregistrée');
+            // Envoyer un message flash avant redirection de l'utilisateur
+            $this->addFlash('success', 'Votre annonce a été créée avec succès');
+            return $this->redirectToRoute('home'); // rediriger à la page d'accueil
+        }
+
+        // Afficher le formulaire
+        return $this->render('listings/create_listing.html.twig', [
+            'form' => $form
+        ]);
+        // dd('hello world');
     }
 
-    // Créer un nouvel objet annonce
-    $listing = new Listing;
-    $listing->setTitle('Charmant ppartement')
-        ->setDescription('Se situe à Lyon à côté du centre de Lyon, à Perrache')
-        ->setCity($lyon)
-        ->setPrice(634.4)
-        ->setPropertyType($propertyType)
-        ->setTransactionType($transactionType)
-        ->setAgent($agent)
-        ->setImage('https://placehold.co/300x200/EEE/31343C')
-         ->setCreatedAt(new DateTimeImmutable());
+    // Action pour afficher une seule anonce immobilière en détail
+    #[Route(
+        path:'/listings/{id}',
+        name: 'listings_show_detailed_listing',
+        methods: 'GET'
+    )]
+    public function show(#[MapEntity(id:'id')] ?Listing $listing): Response
+    {
+        dd($listing);
+    }
 
-    // Persister et envoyer en base de données
-    $em->persist($listing);
-    $em->flush();
+    // Action pour mettre à jour une anonce immobilière 
+    public function update(): Response
+    {
 
-    return $this->redirectToRoute('home');
+    }
+
+
+        // Action pour mettre à jour une anonce immobilière 
+    public function delete(): Response
+    {
+        
     }
 }

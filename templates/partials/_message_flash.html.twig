@@ -1,7 +1,7 @@
 {# Lire et afficher tous les messages flash #}
 {% for label, messages in app.flashes %}
     {% for message in messages %}
-        <div class="flash-{{ label }} text-white text-center bg-primary p-3">
+        <div class="flash-{{ label }} text-white text-center p-3 {% if label =='success' %} bg-primary {% else %} bg-danger {% endif %} ">
             {{ message }}
         </div>
     {% endfor %}
