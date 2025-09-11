@@ -85,9 +85,27 @@ final class ListingController extends AbstractController
     }
 
 
-        // Action pour mettre à jour une anonce immobilière 
-    public function delete(): Response
+    // Action pour mettre à jour une anonce immobilière 
+    #[Route(
+            path: '/listings/delete/{id}',
+            name: 'listings_delete_listing_by_id'
+        )]
+    public function delete(
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'id')] ?Listing $listing
+    ): Response
     {
-        
+        // dd($listing);
+        if(!$listing){
+            throw $this->createNotFoundException('Annonce à supprimer inexistante');
+        }
+
+        // Supprimer de la base de donnée
+        $entityManager->remove($listing);
+        $entityManager->flush();
+
+        // Envoyer un message flash de succès avant de faire une redirection d'URL
+        $this->addFlash('success', 'Annoncée supprimée avec succès');
+        return $this->redirectToRoute('home'); // rediriger l'utilisateur à la page d'accueil
     }
 }
