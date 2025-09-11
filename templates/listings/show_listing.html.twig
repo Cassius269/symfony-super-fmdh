@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('ListingShowPage')}}
+{% endblock %}
+
+{% block body %}
+    <article class="card col-lg-3 w-100">
+        <img src="{{ listing.image }}" alt="image d'illustration de l'annonce">
+            <div>{{ listing.transactionType.name}}</div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title">{{ listing.title }}</h2>
+                {% if listing.transactionType.name == 'location' %}
+                    <p class="card-text fst-italic">{{ listing.price }} €/mois</p>
+
+                {% elseif listing.transactionType.name == 'vente' %}
+                    <p class="card-text fst-italic">{{ listing.price }} €</p>                
+                {% endif %}
+            </div>
+            <p class="card-text">{{ listing.city.name }}</p>
+            <p class="card-text">{{ listing.description }}</p>
+            <p class="card-text">Agent: {{ listing.agent.firstname }} {{ listing.agent.Lastname }} </p>
+            <p class="card-text">Publié le  {{ listing.createdAt|date(('d-m-Y')) }}</p>
+             {% if is_granted('ROLE_CLIENT') and  listing.agent.email != app.user.email %}
+                    <a href="#">
+                            <button class="btn btn-secondary">Contacter l'agent</button>
+                    </a>
+            {% endif %}
+            {% if app.user %}            
+                {% if listing.agent.email == app.user.email %}
+                    <div class="divButtonsAction">
+                        <a href="{{ path('listings_show', { id: listing.id })}}">
+                            <button class="btn btn-secondary">Mettre à jour</button>
+                        </a>
+                        <a href="{{ path('listings_delete', { id: listing.id })}}">
+                            <button class="btn btn-danger">supprimer</button>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </article>
+{% endblock %}

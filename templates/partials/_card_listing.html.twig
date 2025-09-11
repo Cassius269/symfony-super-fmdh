@@ -1,5 +1,5 @@
 <article class="card col-lg-3" style="height: 551px;">
-    <img src="{{ listing.image }}" alt="">
+    <img src="{{ listing.image }}" alt="image d'illustration de l'annonce">
         <div>{{ listing.transactionType.name}}</div>
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
@@ -13,6 +13,8 @@
         </div>
         <p class="card-text">{{ listing.city.name }}</p>
         <p class="card-text">{{ listing.description }}</p>
-        <button class="btn btn-primary">Contact</button>
+        <a href="{{ path('listings_show', { id: listing.id })}}">
+            <button class="btn btn-primary">Regarder en détail</button>
+        </a>
      </div>
 </article>

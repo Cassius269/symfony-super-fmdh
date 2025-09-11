@@ -70,12 +70,20 @@ final class ListingController extends AbstractController
     // Action pour afficher une seule anonce immobilière en détail
     #[Route(
         path:'/listings/{id}',
-        name: 'listings_show_detailed_listing',
+        name: 'listings_show',
         methods: 'GET'
     )]
     public function show(#[MapEntity(id:'id')] ?Listing $listing): Response
     {
-        dd($listing);
+        // dd($listing);
+        if(!$listing){
+        throw $this->createNotFoundException('Annonce inexistante');
+        }
+
+        return $this->render('listings/show_listing.html.twig', [
+            'listing' => $listing
+        ]);
+
     }
 
     // Action pour mettre à jour une anonce immobilière 
@@ -88,7 +96,7 @@ final class ListingController extends AbstractController
     // Action pour mettre à jour une anonce immobilière 
     #[Route(
             path: '/listings/delete/{id}',
-            name: 'listings_delete_listing_by_id'
+            name: 'listings_delete'
         )]
     public function delete(
         EntityManagerInterface $entityManager,
