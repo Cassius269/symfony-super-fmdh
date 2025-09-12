@@ -58,10 +58,12 @@ class ListingType extends AbstractType
             ->add('propertyType', EntityType::class, [
                 'class' => PropertyType::class,
                 'choice_label' => 'name',  // choisir le type de propriété par son nom disponible dans la base de donnée
+                'label' => 'Type de propriété'
             ])
             ->add('transactionType', EntityType::class, [
                 'class' => TransactionType::class,
                 'choice_label' => 'name', // choisir le type de transaction par son nom disponible dans la base de donnée
+                'label' => 'Type de transaction'
             ]);
     }
 

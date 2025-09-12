@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('ListingShowPage')}}
+    {{ encore_entry_link_tags('listingShowPage')}}
 {% endblock %}
 
 {% block body %}
@@ -36,9 +36,10 @@
                         <a href="{{ path('listings_show', { id: listing.id })}}">
                             <button class="btn btn-secondary">Mettre à jour</button>
                         </a>
-                        <a href="{{ path('listings_delete', { id: listing.id })}}">
+                        <form action="{{ path('listings_delete', { id: listing.id })}}" method='POST'>
                             <button class="btn btn-danger">supprimer</button>
-                        </a>
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-listing' ~ listing.id)}}">
+                        </form>
                     </div>
                 {% endif %}
             {% endif %}

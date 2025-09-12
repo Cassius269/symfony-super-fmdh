@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Page de création de nouvelle annonce immobilière
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('listingCreatePage')}}
+{% endblock %}
+
 {% block body %}
     <section class="mb-5">
         <h2 class="mb-5">Ajouter une nouvelle annonce</h2>

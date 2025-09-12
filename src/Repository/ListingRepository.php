@@ -41,7 +41,7 @@ class ListingRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    // Fonction de recherche d'appartements
+    // Fonction de recherche de logement par le type de propriété
     public function findByPropertyType(string $propertyType){
         return $this->createQueryBuilder('l')
         ->innerJoin('l.propertyType', 'pt')
