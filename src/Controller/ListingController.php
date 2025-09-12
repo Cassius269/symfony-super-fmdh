@@ -109,6 +109,9 @@ final class ListingController extends AbstractController
          if(!$listing){
             throw $this->createNotFoundException('Annonce à supprimer inexistante');
         }
+    
+        // Gérer la permission de suppression
+        $this->denyAccessUnlessGranted('LISTING_DELETE', $listing);
 
         // Vérifier le token CSRF
         if($this->isCsrfTokenValid(
