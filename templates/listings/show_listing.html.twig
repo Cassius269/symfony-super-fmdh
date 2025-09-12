@@ -31,7 +31,7 @@
                     </a>
             {% endif %}
             {% if app.user %}            
-                {% if listing.agent.email == app.user.email %}
+                {% if listing.agent.email == app.user.email or is_granted('ROLE_ADMIN') %}
                     <div class="divButtonsAction">
                         <a href="{{ path('listings_show', { id: listing.id })}}">
                             <button class="btn btn-secondary">Mettre à jour</button>
