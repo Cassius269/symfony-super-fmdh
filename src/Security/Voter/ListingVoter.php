@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 final class ListingVoter extends Voter
 {
     public const DELETE = 'LISTING_DELETE';
+    public const UPDATE = 'LISTING_UPDATE';
 
     public function __construct(private Security $security)
     {
@@ -19,7 +20,7 @@ final class ListingVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::DELETE])
+        return in_array($attribute, [self::DELETE, self::UPDATE])
             && $subject instanceof \App\Entity\Listing;
     }
 
@@ -40,6 +41,13 @@ final class ListingVoter extends Voter
                 }
                 // return true or false
                 break;
+            case self::UPDATE:
+                // logic to determine if the user can DELETE
+                if(($this->security->isGranted('ROLE_AGENT') && $subject->getAgent()->getEmail() == $user->getEmail()) || $this->security->isGranted('ROLE_ADMIN') || $this->security->isGranted('ROLE_SUPER_ADMIN')){
+                    return true;
+                }
+                // return true or false
+                break;                
         }
 
         return false;

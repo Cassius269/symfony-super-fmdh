@@ -7,6 +7,7 @@ use App\Entity\City;
 use App\Entity\Listing;
 use App\Entity\PropertyType;
 use App\Entity\TransactionType;
+use App\Form\DataTransformer\TransactionTypeToNumberTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;

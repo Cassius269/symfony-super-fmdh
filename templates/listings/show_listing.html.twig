@@ -33,7 +33,7 @@
             {% if app.user %}            
                 {% if listing.agent.email == app.user.email or is_granted('ROLE_ADMIN') %}
                     <div class="divButtonsAction">
-                        <a href="{{ path('listings_show', { id: listing.id })}}">
+                        <a href="{{ path('listings_update', { id: listing.id })}}">
                             <button class="btn btn-secondary">Mettre à jour</button>
                         </a>
                         <form action="{{ path('listings_delete', { id: listing.id })}}" method='POST'>

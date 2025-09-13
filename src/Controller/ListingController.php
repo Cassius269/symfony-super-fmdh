@@ -87,13 +87,45 @@ final class ListingController extends AbstractController
     }
 
     // Action pour mettre à jour une anonce immobilière 
-    public function update(): Response
+    #[Route(
+        path:'/listings/update/{id}',
+        name: 'listings_update',
+        methods: ['GET', 'POST']
+    )]
+    public function update(
+        ?Listing $listing, 
+        Request $request,
+        EntityManagerInterface $entityManager): Response
     {
+        // dd($listing);
 
+        // Hydratation du listing avec les données mises à jour
+        $form = $this->createForm(ListingType::class, $listing);
+
+        // Recuillir la requête POST
+        $form->handleRequest($request);
+
+        // if($form->isSubmitted() && !$form->isValid()) {
+        //         $form->getErrors(true);
+        // }
+        
+        // Vérifier le formulaire avant de sauvegarder
+        if($form->isSubmitted() && $form->isValid()) {
+           $listing->setUpdatedAt(new \DateTime());
+           $entityManager->flush();
+
+            // Envoyr un message flash de succès
+            $this->addFlash('success', 'Annonce mise à jour');
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('listings/update_listing.html.twig', [
+            'form' => $form
+        ]);
     }
 
 
-    // Action pour mettre à jour une anonce immobilière 
+    // Action pour supprimer une anonce immobilière 
     #[Route(
             path: '/listings/delete/{id}',
             name: 'listings_delete',

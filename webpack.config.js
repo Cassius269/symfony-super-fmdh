@@ -25,6 +25,7 @@ Encore
     .addEntry('registerPage',['./assets/styles/pages/_register.scss'])
     .addEntry('listingShowPage', ['./assets/styles/pages/_show_listing_page.scss'])
     .addEntry('listingCreatePage', ['./assets/styles/pages/_create_listing.scss'])
+    .addEntry('listingUpdatePage', ['./assets/styles/pages/_update_listing_page.scss'])
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
