@@ -8,10 +8,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end w-100">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Maisons</a>
+          <a class="nav-link active" aria-current="page" href="{{ path('listing_all', {'type': 'maison'})}}">Maisons</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Appartement</a>
+          <a class="nav-link" href="{{ path('listing_all', {'type': 'appartement'}) }}">Appartement</a>
         </li>
         <!-- Bouton ajouter réservé à l'ADMIN et aux AGENTS -->
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AGENT') %}

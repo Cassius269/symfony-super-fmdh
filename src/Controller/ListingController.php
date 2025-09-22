@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Listing;
 use App\Form\ListingType;
+use App\Repository\ListingRepository;
+use App\Repository\PropertyTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,10 +21,26 @@ final class ListingController extends AbstractController
         name: 'listing_all',
         methods: 'GET')
     ]
-    public function index(): Response
+    public function index(Request $request, ListingRepository $listingRepository, PropertyTypeRepository $propertyTypeRepository): Response
     {
+        $value = $request->get('type');
+        $array = [];
+        $propertyTypes = $propertyTypeRepository->findAll();
+
+        if($propertyTypes){     
+            foreach($propertyTypes as $propertyType){
+                        $array[] = $propertyType->getName();
+            }
+    }
+// dd($array);
+    if(in_array($value, $array)){
+        $listings =  $listingRepository->findByPropertyType($value);
+    }else {
+        $listings = $listingRepository->findAll();
+    }
+
         return $this->render('listings/index.html.twig', [
-            'controller_name' => 'ListingController',
+            'listings' => $listings
         ]);
     }
 

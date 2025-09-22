@@ -4,4 +4,8 @@
 
 {% block body %}
 <h1>Page des annonces</h1>
+
+    {% for listing in listings %}
+        {% include "partials/_card_listing.html.twig" %}
+    {% endfor %}
 {% endblock %}
